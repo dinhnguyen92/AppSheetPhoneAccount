@@ -35,11 +35,15 @@ Eg:  https://appsheettest1.azurewebsites.net/sample/detail/21
 *** Algorithm Overview ***
 
 There are two main approaches to solving the given problem: 
+
 _ Retrieve all phone accounts with valid phone numbers from database, sort the accounts based on age, and return the first 5 accounts.
+
 _ Use the list method to retrieve accounts in batches. For each batch, keep the accounts the meet the requirements, discard the rest.
 
 The first approach has two main disadvantages: 
+
 _ Memory intensive: all of the accounts retrieved from the database must be stored
+
 _ Time-consuming: sorting the entire database of phone accounts can be extremely slow
 
 Since this program may be used by AppSheet to provide phone account search services to mobile devices, slow run time is unacceptable.
