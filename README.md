@@ -12,15 +12,16 @@ The web service for accessing the phone account database is provided by AppSheet
 Service Endpoint: https://appsheettest1.azurewebsites.net/sample/
 
 Web Service Methods:
+
 1. list
-  This method will return an array of up to 10 user IDs.  
-  If there are more than 10 results the response will also contain a token that can be used to retrieve the next set of results.  
-  This optional token can be passed as a query string parameter
-  Eg:  https://appsheettest1.azurewebsites.net/sample/list or https://appsheettest1.azurewebsites.net/sample/list?token=b32b3
+This method will return an array of up to 10 user IDs.  
+If there are more than 10 results the response will also contain a token that can be used to retrieve the next set of results.  
+This optional token can be passed as a query string parameter
+Eg:  https://appsheettest1.azurewebsites.net/sample/list or https://appsheettest1.azurewebsites.net/sample/list?token=b32b3
 
 2. detail/{user id}
-  This method will returns the full details for a given user
-  Eg:  https://appsheettest1.azurewebsites.net/sample/detail/21
+This method will returns the full details for a given user
+Eg:  https://appsheettest1.azurewebsites.net/sample/detail/21
 
 
 *** Project's main classes ***
