@@ -64,6 +64,8 @@ If the number of accounts to collect is large, this can slow down the program si
 However, since the accounts returned are most probably for display on a mobile device with relattively small screen,
 only a small number of accounts must be returned.
 
+Regardless of which approach is used, without the ability to query the database directly, the program will always have to go through every single phone account in the database. If retrieving phone accounts based on age is a fairly frequent operation, perhaps an index based on the age attribute can be added to the database. A new method can then be added to the web service to query the database using the index. This would considerably reduce the number of records that have to be processed, thus reducing runtime. 
+
 
 *** Third Party Plug-in ***
 
