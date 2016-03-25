@@ -161,7 +161,7 @@ namespace PhoneAccountService
             // Add [numRes] accounts with valid number to the account list
             // If the number of accounts retrieved from web service is less than [numRes]
             // Add all the retrieved accounts with valid number
-            int maxAgeIndex= 0; // track the ID of the account the max age among the collecte accounts
+            int maxAgeIndex = 0; // track the ID of the account the max age among the collecte accounts
             for (int i = 0; i < idList.result.Count; i++)
             {
                 string json = null;
@@ -222,8 +222,9 @@ namespace PhoneAccountService
                             maxAgeIndex = getMaxAgeIndex(accounts);
                         }
                     }
-                } 
-            } 
+                }
+            }
         }
-    } 
+    }
 }
+
