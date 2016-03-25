@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using Newtonsoft.Json;
+using System.Diagnostics;
 using System.Collections.Generic;
 
 
@@ -14,17 +15,30 @@ namespace PhoneAccountService
         const string LIST_TOKEN_ROUTE = "list?token=";
         const string DETAIL_ROUTE = "detail/";
 
-        // Number of accounts to display
         const int numRes = 5;
+
+        enum Env { Debugging, Normal };
+
+        // Set env to Debugging to display log messages
+        // Set env to run the program at full speed
+        private const int env = (int)Env.Normal;
 
         static void Main(string[] args)
         {
             List<PhoneAcc> accounts = new List<PhoneAcc>(); // List for storing the final accounts to be displayed
             IDList idList = new IDList(); // Class for storing ID list retrieved from the web service
 
+            // Start timing
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
             // Retrieve the list of account IDs from the web service
             idList = getIDListFromWeb(null);
-            Console.WriteLine("Retrieved ID list: " + idList.ToString());
+
+            if (env == (int)Env.Debugging)
+            {
+                Console.WriteLine("Retrieved ID list: " + idList.ToString());
+            }
 
             // Process the retrieved accounts and store valid accounts
             processPhoneAcc(idList, ref accounts, numRes);
@@ -35,7 +49,11 @@ namespace PhoneAccountService
             {
                 // Retrieve the list of account IDs from the web service
                 idList = getIDListFromWeb(idList.token);
-                Console.WriteLine("Retrieved ID list: " + idList.ToString());
+
+                if (env == (int)Env.Debugging)
+                {
+                    Console.WriteLine("Retrieved ID list: " + idList.ToString());
+                }
 
                 // Process the retrieved accounts and store valid accounts
                 processPhoneAcc(idList, ref accounts, numRes);
@@ -45,7 +63,14 @@ namespace PhoneAccountService
             AccNameCompare nameCompare = new AccNameCompare();
             accounts.Sort(nameCompare);
 
+            // Stop timing
+            stopWatch.Stop();
+
+            long time = stopWatch.ElapsedMilliseconds;
+
             // Print out the result
+            Console.WriteLine();
+            Console.WriteLine("Time elapsed: {0} ms", time);
             Console.WriteLine();
             Console.WriteLine(accounts.Count + " results sorted by name: ");
             for (int i = 0; i < accounts.Count; i++)
@@ -156,14 +181,21 @@ namespace PhoneAccountService
                 }
 
                 PhoneAcc acc = JsonConvert.DeserializeObject<PhoneAcc>(json);
-                Console.WriteLine("Retrieved account: " + acc.ToString());
+
+                if (env == (int)Env.Debugging)
+                {
+                    Console.WriteLine("Retrieved account: " + acc.ToString());
+                }
 
                 if (acc.hasValidNumber())
                 {
                     // If not enough results have been collected
                     if (accounts.Count < numRes)
                     {
-                        Console.WriteLine("Adding account with ID: " + acc.id);
+                        if (env == (int)Env.Debugging)
+                        {
+                            Console.WriteLine("Adding account with ID: " + acc.id);
+                        }
                         accounts.Add(acc);
 
                         // Update the index of the account with max age
@@ -179,7 +211,10 @@ namespace PhoneAccountService
                         // Compare the retrieved acc to the collected acc with max age
                         if (acc.age < accounts[maxAgeIndex].age)
                         {
-                            Console.WriteLine("Replacing account " + accounts[maxAgeIndex].id + " with account " + acc.id);
+                            if (env == (int)Env.Debugging)
+                            {
+                                Console.WriteLine("Replacing account " + accounts[maxAgeIndex].id + " with account " + acc.id);
+                            }
                             // Replace the acc with max age with the retrieved acc
                             accounts[maxAgeIndex] = acc;
 
